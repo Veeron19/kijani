@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'self'; object-src 'none'; frame-src 'none'; img-src 'self' data:; style-src 'self' 'sha256-mMeMI633JeLxYmE11ah7eCZtSEmrXLwp2lQlq+0O+ss=' https://fonts.googleapis.com; style-src-attr 'none'; font-src 'self' https://fonts.gstatic.com; script-src 'sha256-mgNCPOTBXkZVcMxOFji5I+yCzBcLTi8WVED2D55jFhk='; script-src-attr 'none'; connect-src 'self'; form-action 'self'; upgrade-insecure-requests">
 <title>Kijani Grace School | Finding your true north | Kamiti Road, Nairobi</title>
 <meta name="description" content="Kijani Grace School is a post-modern school along Kamiti Road at Richland Estate, Nairobi. Finding your true north.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +32,7 @@ nav{display:flex;gap:2px}nav a{padding:8px 13px;color:var(--ink);text-decoration
 .eyebrow{display:inline-block;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem;color:var(--leaf);margin-bottom:14px}
 .hero h1{font-size:clamp(2.8rem,7vw,5.6rem);font-weight:800}.hero h1 em{color:var(--leaf);font-style:italic}
 .hero p{font-size:1.2rem;color:var(--muted);max-width:40ch;margin:0 0 1.6em}
-.ctas{display:flex;gap:12px;flex-wrap:wrap}
+.ctas{display:flex;gap:12px;flex-wrap:wrap}.contact-ctas{margin-top:22px}
 .shot{position:relative}.shot>img{width:100%;aspect-ratio:5/4;object-fit:cover;border-radius:0 170px 0 170px;box-shadow:18px 18px 0 var(--lime)}
 .compass{position:absolute;right:-14px;top:-30px;width:96px;height:96px;background:#fff;border-radius:50%;padding:12px;box-shadow:0 8px 24px rgba(20,69,42,.2);animation:spin 40s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -150,19 +152,19 @@ footer .social-links a:hover{background:#cfe3c1;color:#0d3220}
 <div class="card"><b>Location</b><span>Kamiti Road, adjacent to Richland Estate / Kahawa Law Courts, Nairobi, Kenya</span></div>
 <div class="card"><b>Call</b><a href="tel:+254796316950">0796 316 950</a></div>
 <div class="card"><b>Call</b><a href="tel:+254721820716">0721 820 716</a></div>
-<div class="ctas" style="margin-top:22px"><a class="btn" href="tel:+254796316950">Call now</a><a class="btn lime" href="https://wa.me/254796316950" rel="noopener">WhatsApp</a><a class="btn out" href="https://www.google.com/maps/search/?api=1&amp;query=Kijani+Grace+School+Kamiti+Road+Nairobi" rel="noopener">Open in Maps</a></div>
+<div class="ctas contact-ctas"><a class="btn" href="tel:+254796316950">Call now</a><a class="btn lime" href="https://wa.me/254796316950" rel="noopener">WhatsApp</a><a class="btn out" href="https://www.google.com/maps/search/?api=1&amp;query=Kijani+Grace+School+Kamiti+Road+Nairobi" rel="noopener">Open in Maps</a></div>
 </div></div></section>
 
 <section id="enquire" class="enq"><div class="wrap">
 <div><h2>Start an enquiry</h2><p class="lead">Tell us about your child and we will get back to you about admission. You can also call 0796 316 950 or 0721 820 716.</p></div>
 <!-- CONNECT YOUR EMAIL: replace FORM_ENDPOINT_HERE below with your form service URL (Formspree, Web3Forms, etc.) -->
 <form id="f" action="FORM_ENDPOINT_HERE" method="POST" novalidate>
-<label>Your name<input name="n" required autocomplete="name" placeholder="Parent or guardian"></label>
-<label>Phone number<input name="p" type="tel" required autocomplete="tel" placeholder="07xx xxx xxx"></label>
-<label class="full">Email <span class="opt">(optional)</span><input name="e" type="email" autocomplete="email" placeholder="you@example.com"></label>
-<label>Child’s name<input name="c" required placeholder="Full name"></label>
-<label>Class joining<input name="l" placeholder="e.g. Grade 4"></label>
-<label class="full">Message <span class="opt">(optional)</span><textarea name="m" placeholder="Questions about admission, fees, transport..."></textarea></label>
+<label>Your name<input name="n" required maxlength="100" autocomplete="name" placeholder="Parent or guardian"></label>
+<label>Phone number<input name="p" type="tel" required maxlength="30" autocomplete="tel" placeholder="07xx xxx xxx"></label>
+<label class="full">Email <span class="opt">(optional)</span><input name="e" type="email" maxlength="254" autocomplete="email" placeholder="you@example.com"></label>
+<label>Child’s name<input name="c" required maxlength="100" autocomplete="off" placeholder="Full name"></label>
+<label>Class joining<input name="l" maxlength="50" placeholder="e.g. Grade 4"></label>
+<label class="full">Message <span class="opt">(optional)</span><textarea name="m" maxlength="1000" autocomplete="off" placeholder="Questions about admission, fees, transport..."></textarea></label>
 <button class="btn full" type="submit">Send enquiry</button>
 <p id="st" role="status"></p>
 </form>
@@ -182,16 +184,17 @@ lb.addEventListener("keydown",function(e){if(e.key==="ArrowLeft")go(-1);if(e.key
 var sx=0;lb.addEventListener("touchstart",function(e){sx=e.touches[0].clientX},{passive:true});lb.addEventListener("touchend",function(e){var d=e.changedTouches[0].clientX-sx;if(Math.abs(d)>50)go(d<0?1:-1)});
 document.getElementById("y").textContent=new Date().getFullYear();
 var f=document.getElementById("f"),st=document.getElementById("st");
-function say(h,e){st.className="on"+(e?" err":"");st.innerHTML=h}
+function say(message,e,actions){st.className="on"+(e?" err":"");st.textContent=message;if(actions&&actions.length){var box=document.createElement("div");box.className="mini";actions.forEach(function(item){var a=document.createElement("a");a.className=item.className;a.href=item.href;a.rel="noopener noreferrer";a.textContent=item.label;box.appendChild(a)});st.appendChild(box)}}
 f.addEventListener("submit",function(ev){
 ev.preventDefault();var v=function(k){return f.elements[k].value.trim()};
 if(!v("n")||!v("p")||!v("c")){say("Please fill in your name, phone number and your child’s name.",1);return}
 if(v("e")&&!/^\S+@\S+\.\S+$/.test(v("e"))){say("That email address does not look right. Please check it.",1);return}
 var act=f.getAttribute("action");
 if(act.indexOf("FORM_ENDPOINT_HERE")<0){var fd=new FormData();fd.append("Parent name",v("n"));fd.append("Phone",v("p"));fd.append("Email",v("e"));fd.append("Child name",v("c"));fd.append("Class joining",v("l"));fd.append("Message",v("m"));fd.append("_subject","New school enquiry: "+v("c"));
-fetch(act,{method:"POST",body:fd,headers:{Accept:"application/json"}}).then(function(r){if(!r.ok)throw 0;f.reset();say("Thank you! We have received your enquiry and will contact you soon.")}).catch(function(){say("Sorry, that did not send. Please call 0796 316 950.",1)});return}
+fetch(act,{method:"POST",body:fd,headers:{Accept:"application/json"}}).then(function(r){if(!r.ok)throw new Error("Form submission failed");f.reset();say("Thank you! We have received your enquiry and will contact you soon.")}).catch(function(){say("Sorry, that did not send. Please call 0796 316 950.",1)});return}
 var t="Kijani Grace School enquiry\nParent/guardian: "+v("n")+"\nPhone: "+v("p")+"\nEmail: "+(v("e")||"-")+"\nChild: "+v("c")+"\nClass joining: "+(v("l")||"-")+"\nMessage: "+(v("m")||"-");
-say("Almost done. Send your enquiry to the school on WhatsApp:<div class='mini'><a class='btn lime' href='https://wa.me/254796316950?text="+encodeURIComponent(t)+"' rel='noopener'>Send on WhatsApp</a><a class='btn out' href='tel:+254796316950'>Call instead</a></div>")});
+var whatsapp=new URL("https://wa.me/254796316950");whatsapp.searchParams.set("text",t);
+say("Almost done. Send your enquiry to the school on WhatsApp:",0,[{href:whatsapp.href,label:"Send on WhatsApp",className:"btn lime"},{href:"tel:+254796316950",label:"Call instead",className:"btn out"}])});
 </script>
 </body>
 </html>
